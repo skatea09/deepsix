@@ -22,7 +22,6 @@ const rootReducer = (state = initialState, { type, payload }) => {
       return Object.assign({}, state, { isFetching: false, error });
     }
     default:
-      console.log('hereeee');
       return state;
   }
 };

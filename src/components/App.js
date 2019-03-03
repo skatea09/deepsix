@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { setupRealtimeNodes } from '../redux/actions';
+import { setupDbListener } from '../redux/actions';
 import TreeRoot from './TreeRoot';
 
 const propTypes = {
-  setupRealtimeNodes: PropTypes.func.isRequired,
+  setupDbListener: PropTypes.func.isRequired,
 }
 
 class App extends Component {
   componentDidMount() {
-    this.props.setupRealtimeNodes();
+    this.props.setupDbListener();
   }
   render() {
     return (
@@ -21,4 +21,4 @@ class App extends Component {
 
 App.propTypes = propTypes;
 
-export default connect(null, { setupRealtimeNodes })(App);
+export default connect(null, { setupDbListener })(App);
