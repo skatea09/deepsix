@@ -36,10 +36,10 @@ export const addNode = parentId => async dispatch => {
   }
 };
 
-export const deleteNode = node => async dispatch => {
+export const deleteNode = ({ node, batchDelete }) => async dispatch => {
   dispatch({ type: "DELETE_NODE_REQUEST" });
   try {
-    await deleteFromParentNode(node.parent, node.id);
+    if (!batchDelete) await deleteFromParentNode(node.parent, node.id);
     await deleteChildNode(node.id);
     dispatch({ type: "DELETE_NODE_SUCCESS" });
   } catch (error) {

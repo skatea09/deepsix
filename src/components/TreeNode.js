@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
 import * as actions from "../redux/actions";
+import NodeName from './NodeName';
 
 const propTypes = {
   node: PropTypes.object.isRequired,
@@ -25,22 +25,28 @@ const TreeNode = ({
   canDelete,
   history
 }) => {
+
   const deleteNodes = node => {
     if (node.children)
-      node.children.map(id => {
+      node.children.forEach(id => {
         const node = dataObj[id];
-        deleteNode(node);
+        deleteNode({ node, batchDelete: true });
         if (node.children) deleteNodes(node);
       });
-      deleteNode(node);
+      deleteNode({ node });
   };
-  let childNodes;
-  if (node.children)
-    childNodes = node.children.map(id => dataObj[id]).filter(node => node);
+
+  const getChildNodes = () => {
+    if (node.children) {
+      return node.children.map(id => dataObj[id]).filter(node => node);
+    }
+  }
+  const childNodes = getChildNodes();
+
   return (
     <div style={{ marginLeft: 40 }}>
       <div style={{ display: "flex" }}>
-        <Link to={`/${node.id}`}>{node.name}</Link>
+        <NodeName name={node.name} id={node.id} />
         <div onClick={() => addNode(node.id)} style={{ paddingLeft: 10 }}>
           (+)
         </div>

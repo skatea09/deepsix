@@ -15,20 +15,35 @@ class TreeRoot extends Component {
   componentDidMount() {
     this.props.setupDbListener();
   }
-  render() {
-    const { nodes, location, history } = this.props;
-    if (!nodes.length) return null;
-    const dataObj = _keyBy(nodes, "id");
+
+  getRoots = () => {
+    const {
+      nodes,
+      location: { pathname }
+    } = this.props;
+    const nodesObj = _keyBy(nodes, "id");
     let pageRoot;
     const mainRoot = nodes.find(node => node.isRoot);
-    if (location.pathname === "/") pageRoot = mainRoot;
-    else pageRoot = dataObj[location.pathname.substring(1)];
-    if (!pageRoot) return <div>{`No match found for ${location.pathname}`}</div>;
+    if (pathname === "/") pageRoot = mainRoot;
+    else pageRoot = nodesObj[pathname.substring(1)];
+    return { pageRoot, mainRoot, nodesObj };
+  };
+
+  renderNotFound = () => {
+    const { location: pathname } = this.props;
+    return <div>{`No match found for ${pathname}`}</div>;
+  };
+
+  render() {
+    const { nodes, history } = this.props;
+    if (!nodes.length) return null;
+    const { pageRoot, mainRoot, nodesObj } = this.getRoots();
+    if (!pageRoot) this.renderNotFound();
     return (
       <div>
         <TreeNode
           node={pageRoot}
-          dataObj={dataObj}
+          dataObj={nodesObj}
           canDelete={pageRoot !== mainRoot}
           history={history}
         />
