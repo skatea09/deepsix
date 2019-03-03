@@ -1,16 +1,39 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 import * as actions from "../redux/actions";
 
 const propTypes = {
   node: PropTypes.object.isRequired,
   dataObj: PropTypes.object.isRequired,
-  addNode: PropTypes.func.isRequired
+  addNode: PropTypes.func.isRequired,
+  deleteNode: PropTypes.func.isRequired,
+  history: PropTypes.object.isRequired,
+  canDelete: PropTypes.bool
 };
 
-const TreeNode = ({ node, dataObj, addNode }) => {
+const defaultProps = {
+  canDelete: false
+};
+
+const TreeNode = ({
+  node,
+  dataObj,
+  addNode,
+  deleteNode,
+  canDelete,
+  history
+}) => {
+  const deleteNodes = node => {
+    if (node.children)
+      node.children.map(id => {
+        const node = dataObj[id];
+        deleteNode(node);
+        if (node.children) deleteNodes(node);
+      });
+      deleteNode(node);
+  };
   let childNodes;
   if (node.children)
     childNodes = node.children.map(id => dataObj[id]).filter(node => node);
@@ -21,6 +44,16 @@ const TreeNode = ({ node, dataObj, addNode }) => {
         <div onClick={() => addNode(node.id)} style={{ paddingLeft: 10 }}>
           (+)
         </div>
+        {canDelete && (
+          <div
+            onClick={() => {
+              deleteNodes(node);
+              history.push("/");
+            }}
+          >
+            {"(-)"}
+          </div>
+        )}
       </div>
       {childNodes &&
         childNodes.map(node => (
@@ -28,6 +61,7 @@ const TreeNode = ({ node, dataObj, addNode }) => {
             node={node}
             dataObj={dataObj}
             addNode={addNode}
+            deleteNode={deleteNode}
             key={node.id}
           />
         ))}
@@ -36,6 +70,7 @@ const TreeNode = ({ node, dataObj, addNode }) => {
 };
 
 TreeNode.propTypes = propTypes;
+TreeNode.defaultProps = defaultProps;
 
 export default connect(
   null,

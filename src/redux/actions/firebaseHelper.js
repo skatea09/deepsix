@@ -25,3 +25,17 @@ export const createNewNode = async newChild =>
     .doc(newChild.id)
     .set(newChild)
     .catch(error => Promise.reject(error));
+
+export const deleteFromParentNode = async (parentId, childId) =>
+  await firestore
+    .collection("nodes")
+    .doc(parentId)
+    .update({ children: firebase.firestore.FieldValue.arrayRemove(childId)})
+    .catch(error => Promise.reject(error))
+
+  export const deleteChildNode = async childId =>
+    await firestore
+      .collection("nodes")
+      .doc(childId)
+      .delete()
+      .catch(error => Promise.reject(error))

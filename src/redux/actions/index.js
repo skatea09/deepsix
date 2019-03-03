@@ -1,5 +1,11 @@
-import uuidv4 from 'uuid/v4';
-import { firebaseListener, addToParentNode, createNewNode } from "./firebaseHelper";
+import uuidv4 from "uuid/v4";
+import {
+  firebaseListener,
+  addToParentNode,
+  createNewNode,
+  deleteFromParentNode,
+  deleteChildNode
+} from "./firebaseHelper";
 
 export const setupDbListener = () => dispatch => {
   const successCb = data =>
@@ -16,17 +22,30 @@ export const setupDbListener = () => dispatch => {
 };
 
 export const addNode = parentId => async dispatch => {
-  dispatch({ type: 'ADD_NODE_REQUEST' })
+  dispatch({ type: "ADD_NODE_REQUEST" });
   try {
-    const newChild = {id: uuidv4(), name: 'New' };
+    const newChild = { id: uuidv4(), name: "New", parent: parentId };
     await addToParentNode(parentId, newChild.id);
     await createNewNode(newChild);
-    dispatch({ type: 'ADD_NODE_SUCCESS' })
-  }
-  catch (error) {
+    dispatch({ type: "ADD_NODE_SUCCESS" });
+  } catch (error) {
     dispatch({
-      type: 'ADD_NODE_FAILURE',
+      type: "ADD_NODE_FAILURE",
       payload: { error }
-    })
+    });
   }
-}
+};
+
+export const deleteNode = node => async dispatch => {
+  dispatch({ type: "DELETE_NODE_REQUEST" });
+  try {
+    await deleteFromParentNode(node.parent, node.id);
+    await deleteChildNode(node.id);
+    dispatch({ type: "DELETE_NODE_SUCCESS" });
+  } catch (error) {
+    dispatch({
+      type: "DELETE_NODE_FAILURE",
+      payload: { error }
+    });
+  }
+};
