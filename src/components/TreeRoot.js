@@ -1,11 +1,17 @@
 import React from "react";
 import _keyBy from 'lodash/keyBy';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import TreeNode from "./TreeNode";
-import data from "./data";
 
-const TreeRoot = () => {
-  const rootNode = data.find(node => node.isRoot);
-  const dataObj = _keyBy(data, 'id');
+const propTypes = {
+  nodes: PropTypes.array.isRequired,
+}
+
+const TreeRoot = ({ nodes }) => {
+  if (!nodes.length) return null;
+  const rootNode = nodes.find(node => node.isRoot);
+  const dataObj = _keyBy(nodes, 'id');
   return (
     <div>
       <TreeNode node={rootNode} dataObj={dataObj}/>
@@ -13,4 +19,8 @@ const TreeRoot = () => {
   );
 };
 
-export default TreeRoot;
+TreeRoot.propTypes = propTypes;
+
+export default connect((state) => ({
+  nodes: state.data,
+}))(TreeRoot);
