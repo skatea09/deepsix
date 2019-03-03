@@ -1,24 +1,16 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { setupDbListener } from '../redux/actions';
-import TreeRoot from './TreeRoot';
+import React from "react";
+import { Provider } from "react-redux";
+import { Route, Switch } from 'react-router-dom';
+import store from "../redux/store";
+import TreeRoot from "./TreeRoot";
 
-const propTypes = {
-  setupDbListener: PropTypes.func.isRequired,
-}
+const App = () => (
+  <Provider store={store}>
+    <Switch>
+      <Route exact path='/' component={TreeRoot} />
+      <Route path='/:nodeId' component={TreeRoot} />
+    </Switch>
+  </Provider>
+);
 
-class App extends Component {
-  componentDidMount() {
-    this.props.setupDbListener();
-  }
-  render() {
-    return (
-      <TreeRoot />
-    );
-  }
-}
-
-App.propTypes = propTypes;
-
-export default connect(null, { setupDbListener })(App);
+export default App;

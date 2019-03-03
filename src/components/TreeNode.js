@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { Link } from 'react-router-dom';
 import * as actions from "../redux/actions";
 
 const propTypes = {
@@ -16,7 +17,7 @@ const TreeNode = ({ node, dataObj, addNode }) => {
   return (
     <div style={{ marginLeft: 40 }}>
       <div style={{ display: "flex" }}>
-        <div>{node.name}</div>
+        <Link to={`/${node.id}`}>{node.name}</Link>
         <div onClick={() => addNode(node.id)} style={{ paddingLeft: 10 }}>
           (+)
         </div>
