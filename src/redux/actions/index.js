@@ -4,7 +4,8 @@ import {
   addToParentNode,
   createNewNode,
   deleteFromParentNode,
-  deleteChildNode
+  deleteChildNode,
+  updateNodeName
 } from "./firebaseHelper";
 
 export const setupDbListener = () => dispatch => {
@@ -29,10 +30,7 @@ export const addNode = parentId => async dispatch => {
     await createNewNode(newChild);
     dispatch({ type: "ADD_NODE_SUCCESS" });
   } catch (error) {
-    dispatch({
-      type: "ADD_NODE_FAILURE",
-      payload: { error }
-    });
+    dispatch({ type: "ADD_NODE_FAILURE", payload: { error }});
   }
 };
 
@@ -43,9 +41,17 @@ export const deleteNode = ({ node, batchDelete }) => async dispatch => {
     await deleteChildNode(node.id);
     dispatch({ type: "DELETE_NODE_SUCCESS" });
   } catch (error) {
-    dispatch({
-      type: "DELETE_NODE_FAILURE",
-      payload: { error }
-    });
+    dispatch({ type: "DELETE_NODE_FAILURE",  payload: { error }});
   }
 };
+
+export const updateName = ({ id, name }) => async dispatch => {
+  dispatch({ type: "UPDATE_NAME_REQUEST" });
+  console.log('heeere name', name);
+  try {
+    await updateNodeName({ id, name });
+    dispatch({ type: "UPDATE_NAME_SUCCESS" })
+  } catch (error) {
+    dispatch({ type: "UPDATE_NAME_FAILURE", payload: { error }});
+  }
+}

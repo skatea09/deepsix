@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import * as actions from "../redux/actions";
-import NodeName from './NodeName';
+import NodeName from "./NodeName";
 
 const propTypes = {
   node: PropTypes.object.isRequired,
@@ -25,7 +25,6 @@ const TreeNode = ({
   canDelete,
   history
 }) => {
-
   const deleteNodes = node => {
     if (node.children)
       node.children.forEach(id => {
@@ -33,44 +32,44 @@ const TreeNode = ({
         deleteNode({ node, batchDelete: true });
         if (node.children) deleteNodes(node);
       });
-      deleteNode({ node });
+    deleteNode({ node });
   };
 
   const getChildNodes = () => {
     if (node.children) {
       return node.children.map(id => dataObj[id]).filter(node => node);
     }
-  }
+  };
   const childNodes = getChildNodes();
 
   return (
-    <div style={{ marginLeft: 40 }}>
-      <div style={{ display: "flex" }}>
-        <NodeName name={node.name} id={node.id} />
+    <div>
+      <NodeName name={node.name} id={node.id} />
+      {canDelete && (
+        <div
+          onClick={() => {
+            deleteNodes(node);
+            history.push("/");
+          }}
+        >
+          {"(-)"}
+        </div>
+      )}
+      <div style={{ marginLeft: 32 }}>
         <div onClick={() => addNode(node.id)} style={{ paddingLeft: 10 }}>
           (+)
         </div>
-        {canDelete && (
-          <div
-            onClick={() => {
-              deleteNodes(node);
-              history.push("/");
-            }}
-          >
-            {"(-)"}
-          </div>
-        )}
+        {childNodes &&
+          childNodes.map(node => (
+            <TreeNode
+              node={node}
+              dataObj={dataObj}
+              addNode={addNode}
+              deleteNode={deleteNode}
+              key={node.id}
+            />
+          ))}
       </div>
-      {childNodes &&
-        childNodes.map(node => (
-          <TreeNode
-            node={node}
-            dataObj={dataObj}
-            addNode={addNode}
-            deleteNode={deleteNode}
-            key={node.id}
-          />
-        ))}
     </div>
   );
 };

@@ -1,10 +1,13 @@
-import React, { Component, Fragment } from "react";
-import { Link } from 'react-router-dom';
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import { connect } from 'react-redux';
+import * as actions from '../redux/actions';
 import PropTypes from "prop-types";
 
 const propTypes = {
   name: PropTypes.string,
   id: PropTypes.string.isRequired,
+  updateName: PropTypes.func.isRequired
 };
 
 const defaultProps = {
@@ -12,15 +15,54 @@ const defaultProps = {
 };
 
 class NodeName extends Component {
-  state = { input: "", isEditiong: false };
+  state = { input: "", isEditing: false, hovering: false };
+
+  focus() {
+    this.textInput.focus();
+  }
+
+  updateName = () => {
+    const { isEditing, input } = this.state;
+    const { name, id, updateName } = this.props;
+    this.setState({ isEditing: !isEditing });
+    if (input && input !== name) updateName({ id, name: input });
+  }
+
+  componentDidUpdate() {
+    const { isEditing } = this.state;
+    if (isEditing) this.focus();
+  }
 
   render() {
     const { id, name } = this.props;
+    const { isEditing, hovering } = this.state;
     return (
-      <Fragment>
-        <Link to={`/${id}`}>{name}</Link>
-        <div>Edit</div>
-      </Fragment>
+      <div
+        className="flex relative"
+        onMouseEnter={() => this.setState({ hovering: !hovering })}
+        onMouseLeave={() => this.setState({ hovering: !hovering })}
+      >
+        {isEditing ? (
+          <input
+            onBlur={this.updateName}
+            onChange={(e) => this.setState({ input: e.target.value })}
+            ref={input => {
+              this.textInput = input;
+            }}
+          />
+        ) : (
+          <Link to={`/${id}`}>{name}</Link>
+        )}
+        {hovering &&
+          !isEditing && (
+            <div
+              onClick={() => this.setState({ isEditing: !isEditing })}
+              className="pin-r pl-1 cursor-pointer"
+            >
+              Edit
+            </div>
+          )}
+      </div>
     );
   }
 }
@@ -28,4 +70,4 @@ class NodeName extends Component {
 NodeName.propTypes = propTypes;
 NodeName.defaultProps = defaultProps;
 
-export default NodeName;
+export default connect(null, actions)(NodeName);

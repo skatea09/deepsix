@@ -30,12 +30,19 @@ export const deleteFromParentNode = async (parentId, childId) =>
   await firestore
     .collection("nodes")
     .doc(parentId)
-    .update({ children: firebase.firestore.FieldValue.arrayRemove(childId)})
-    .catch(error => Promise.reject(error))
+    .update({ children: firebase.firestore.FieldValue.arrayRemove(childId) })
+    .catch(error => Promise.reject(error));
 
-  export const deleteChildNode = async childId =>
-    await firestore
-      .collection("nodes")
-      .doc(childId)
-      .delete()
-      .catch(error => Promise.reject(error))
+export const deleteChildNode = async childId =>
+  await firestore
+    .collection("nodes")
+    .doc(childId)
+    .delete()
+    .catch(error => Promise.reject(error));
+
+export const updateNodeName = async ({ id, name }) =>
+  await firestore
+    .collection("nodes")
+    .doc(id)
+    .update({ "name": name })
+    .catch(error => Promise.reject(error))
