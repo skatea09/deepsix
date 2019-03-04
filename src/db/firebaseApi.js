@@ -1,8 +1,11 @@
 import firebase from "./firebaseConfig";
 const firestore = firebase.firestore();
 
+const ref = firestore.collection("nodes");
+const handleError = (error) => Promise.reject(error);
+
 export const firebaseListener = (success, failure) =>
-  firestore.collection("nodes").onSnapshot(
+  ref.onSnapshot(
     querySnapshot => {
       const data = querySnapshot.docs.map(doc => doc.data());
       success(data);
@@ -13,36 +16,31 @@ export const firebaseListener = (success, failure) =>
   );
 
 export const addToParentNode = async (parentId, newChildId) =>
-  await firestore
-    .collection("nodes")
+  await ref
     .doc(parentId)
     .update({ children: firebase.firestore.FieldValue.arrayUnion(newChildId) })
-    .catch(error => Promise.reject(error));
+    .catch(handleError);
 
 export const createNewNode = async newChild =>
-  await firestore
-    .collection("nodes")
+  await ref
     .doc(newChild.id)
     .set(newChild)
-    .catch(error => Promise.reject(error));
+    .catch(handleError);
 
 export const deleteFromParentNode = async (parentId, childId) =>
-  await firestore
-    .collection("nodes")
+  await ref
     .doc(parentId)
     .update({ children: firebase.firestore.FieldValue.arrayRemove(childId) })
-    .catch(error => Promise.reject(error));
+    .catch(handleError);
 
 export const deleteChildNode = async childId =>
-  await firestore
-    .collection("nodes")
+  await ref
     .doc(childId)
     .delete()
-    .catch(error => Promise.reject(error));
+    .catch(handleError);
 
 export const updateNodeName = async ({ id, name }) =>
-  await firestore
-    .collection("nodes")
+  await ref
     .doc(id)
-    .update({ "name": name })
-    .catch(error => Promise.reject(error))
+    .update({ name: name })
+    .catch(handleError);
