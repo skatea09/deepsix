@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 
-
+/* Creates lines for tree */
 ul,
 ul.tree ul {
   list-style: none;
@@ -49,14 +49,6 @@ ul.tree li:last-child:before {
   border-left: 2px solid black;
 }
 
-/* ul.tree li:last-child:after {
-  border-left: 2px solid black;
-  content: "";
-  top: -2.7em;
-  height: 1em;
-  left: -36px;
-  position: relative;
-} */
 
 #tree-root {
   margin-left: 0px;
@@ -72,3 +64,5 @@ ul.tree li:last-child:before {
   content: "";
   display: inline-block;
 }
+
+/********
