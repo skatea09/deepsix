@@ -32,15 +32,15 @@ class TreeRoot extends Component {
   };
 
   renderNotFound = () => {
-    const { location: pathname } = this.props;
-    return <div>{`No match found for ${pathname}`}</div>;
+    const { location: { pathname } } = this.props;
+    return <div>{`No match found for ${pathname.substring(1)}`}</div>;
   };
 
   render() {
     const { nodes, history } = this.props;
     if (!nodes.length) return null;
     const { pageRoot, mainRoot, nodesObj } = this.getRoots();
-    if (!pageRoot) this.renderNotFound();
+    if (!pageRoot) return this.renderNotFound();
     return (
       <div>
         <TreeNode

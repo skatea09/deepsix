@@ -44,17 +44,20 @@ const TreeNode = ({
 
   return (
     <div>
-      <NodeName name={node.name} id={node.id} />
-      {canDelete && (
-        <div
-          onClick={() => {
-            deleteNodes(node);
-            history.push("/");
-          }}
-        >
-          {"(-)"}
-        </div>
-      )}
+      <div className="flex">
+        <NodeName name={node.name} id={node.id} />
+        {canDelete && (
+          <div
+            className="pl-2"
+            onClick={() => {
+              deleteNodes(node);
+              history.push("/");
+            }}
+          >
+            {"(-)"}
+          </div>
+        )}
+      </div>
       <div style={{ marginLeft: 32 }}>
         <div onClick={() => addNode(node.id)} style={{ paddingLeft: 10 }}>
           (+)
