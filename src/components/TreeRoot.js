@@ -59,7 +59,7 @@ export default compose(
   withRouter,
   connect(
     state => ({
-      nodes: state.data
+      nodes: state.nodes.data
     }),
     { setupDbListener }
   )

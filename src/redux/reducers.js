@@ -2,16 +2,16 @@ const initialState = {
   data: []
 };
 
-const rootReducer = (state = initialState, { type, payload }) => {
+const nodes = (state = initialState, { type, payload }) => {
   switch (type) {
     case "UPDATE_NODES_SUCCESS": {
       const { data } = payload;
-      return Object.assign({}, state, { data });
+      return { ...state, data };
     }
-
     default:
       return state;
   }
 };
 
-export default rootReducer;
+
+export default nodes;
