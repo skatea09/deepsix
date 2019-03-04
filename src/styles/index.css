@@ -23,6 +23,11 @@ ul.tree li {
   border-left: 2px solid black;
 }
 
+ul.tree li .node-name {
+  top: -1em;
+  position: relative;
+}
+
 ul.tree li:last-child {
   border-left: none;
 }
@@ -30,8 +35,8 @@ ul.tree li:last-child {
 
 ul.tree li:before {
   position: relative;
-  top: 1em;
-  height: 1em;
+  /* top: 1em; */
+  height: 32px;
   width: 30px;
   color: white;
   border-bottom: 2px solid black;
@@ -44,14 +49,14 @@ ul.tree li:last-child:before {
   border-left: 2px solid black;
 }
 
-ul.tree li:last-child:after {
+/* ul.tree li:last-child:after {
   border-left: 2px solid black;
   content: "";
   top: -2.7em;
   height: 1em;
   left: -36px;
   position: relative;
-}
+} */
 
 #tree-root {
   margin-left: 0px;
@@ -63,12 +68,7 @@ ul.tree li:last-child:after {
 
 #tree-root:before {
   border: 0;
-  content: "";
-  display: inline-block;
-}
-
-#tree-root:after {
-  border: 0;
+  height: 0;
   content: "";
   display: inline-block;
 }

@@ -47,7 +47,7 @@ const TreeNode = ({
 
   return (
     <li id={isPageRoot ? "tree-root" : null}>
-      <div className="flex relative">
+      <div className="flex node-name">
         {canDelete && (
           <i
             className="fa fa-minus-circle cursor-pointer self-center absolute"
