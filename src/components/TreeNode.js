@@ -64,6 +64,7 @@ const TreeNode = ({
           addNode={addNode}
           deleteNode={deleteNode}
           key={node.id}
+          history={history}
         />
       ))
     );
