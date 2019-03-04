@@ -4,16 +4,6 @@ import { connect } from "react-redux";
 import * as actions from "../redux/actions";
 import PropTypes from "prop-types";
 
-const propTypes = {
-  name: PropTypes.string,
-  id: PropTypes.string.isRequired,
-  updateName: PropTypes.func.isRequired
-};
-
-const defaultProps = {
-  name: "New"
-};
-
 class NodeName extends Component {
   state = { input: "", isEditing: false, hovering: false };
 
@@ -71,8 +61,15 @@ class NodeName extends Component {
   }
 }
 
-NodeName.propTypes = propTypes;
-NodeName.defaultProps = defaultProps;
+NodeName.propTypes = {
+  name: PropTypes.string,
+  id: PropTypes.string.isRequired,
+  updateName: PropTypes.func.isRequired
+};
+
+NodeName.defaultProps = {
+  name: "New"
+};
 
 export default connect(
   null,

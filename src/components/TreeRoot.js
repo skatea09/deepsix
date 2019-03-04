@@ -7,12 +7,6 @@ import PropTypes from "prop-types";
 import { setupDbListener } from "../redux/actions";
 import TreeNode from "./TreeNode";
 
-const propTypes = {
-  nodes: PropTypes.array.isRequired,
-  setupDbListener: PropTypes.func.isRequired,
-  history: PropTypes.object.isRequired
-};
-
 class TreeRoot extends Component {
   componentDidMount() {
     this.props.setupDbListener();
@@ -55,7 +49,11 @@ class TreeRoot extends Component {
   }
 }
 
-TreeRoot.propTypes = propTypes;
+TreeRoot.propTypes = {
+  nodes: PropTypes.array.isRequired,
+  setupDbListener: PropTypes.func.isRequired,
+  history: PropTypes.object.isRequired
+};
 
 export default compose(
   withRouter,

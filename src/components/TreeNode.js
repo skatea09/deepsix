@@ -4,21 +4,6 @@ import { connect } from "react-redux";
 import * as actions from "../redux/actions";
 import NodeName from "./NodeName";
 
-const propTypes = {
-  node: PropTypes.object.isRequired,
-  dataObj: PropTypes.object.isRequired,
-  addNode: PropTypes.func.isRequired,
-  deleteNode: PropTypes.func.isRequired,
-  history: PropTypes.object.isRequired,
-  isPageRoot: PropTypes.bool,
-  canDelete: PropTypes.bool
-};
-
-const defaultProps = {
-  canDelete: false,
-  isPageRoot: false
-};
-
 const TreeNode = ({
   node,
   dataObj,
@@ -28,6 +13,7 @@ const TreeNode = ({
   isPageRoot,
   history
 }) => {
+
   const deleteNodes = node => {
     if (node.children)
       node.children.forEach(id => {
@@ -43,45 +29,69 @@ const TreeNode = ({
       return node.children.map(id => dataObj[id]).filter(node => node);
     }
   };
-  const childNodes = getChildNodes();
+
+  const DeleteButton = () =>
+    canDelete && (
+      <i
+        className="fa fa-minus-circle cursor-pointer self-center absolute"
+        style={{ left: -24 }}
+        onClick={() => {
+          deleteNodes(node);
+          history.push("/");
+        }}
+      />
+    );
+
+  const AddButton = () => (
+    <i
+      className="fa fa-plus-circle cursor-pointer pl-2 self-center"
+      onClick={() => addNode(node.id)}
+    />
+  );
+
+  const ChildNodes = () => {
+    const childNodes = getChildNodes();
+    if (!childNodes) return null;
+    return childNodes &&
+      childNodes.map(node => (
+        <TreeNode
+          node={node}
+          dataObj={dataObj}
+          addNode={addNode}
+          deleteNode={deleteNode}
+          key={node.id}
+        />
+      ))
+  }
 
   return (
     <li id={isPageRoot ? "tree-root" : null}>
       <div className="flex node-name">
-        {canDelete && (
-          <i
-            className="fa fa-minus-circle cursor-pointer self-center absolute"
-            style={{ left: -24 }}
-            onClick={() => {
-              deleteNodes(node);
-              history.push("/");
-            }}
-          />
-        )}
+        <DeleteButton />
         <NodeName name={node.name} id={node.id} />
-        <i
-          className="fa fa-plus-circle cursor-pointer pl-2 self-center"
-          onClick={() => addNode(node.id)}
-        />
+        <AddButton />
       </div>
       <ul>
-        {childNodes &&
-          childNodes.map(node => (
-            <TreeNode
-              node={node}
-              dataObj={dataObj}
-              addNode={addNode}
-              deleteNode={deleteNode}
-              key={node.id}
-            />
-          ))}
+        <ChildNodes />
       </ul>
     </li>
   );
 };
 
-TreeNode.propTypes = propTypes;
-TreeNode.defaultProps = defaultProps;
+TreeNode.propTypes = {
+  node: PropTypes.object.isRequired,
+  dataObj: PropTypes.object.isRequired,
+  addNode: PropTypes.func.isRequired,
+  deleteNode: PropTypes.func.isRequired,
+  history: PropTypes.object.isRequired,
+  isPageRoot: PropTypes.bool,
+  canDelete: PropTypes.bool
+};
+
+TreeNode.defaultProps = {
+  canDelete: false,
+  isPageRoot: false
+};
 
 export default connect(
   null,
