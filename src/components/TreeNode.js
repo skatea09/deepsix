@@ -46,26 +46,25 @@ const TreeNode = ({
   const childNodes = getChildNodes();
 
   return (
-    <li id={isPageRoot ? 'tree-root' : null}>
-      <div className="flex">
-        {/* {canDelete && (
-          <div
-            className="absolute"
+    <li id={isPageRoot ? "tree-root" : null}>
+      <div className="flex relative">
+        {canDelete && (
+          <i
+            className="fa fa-minus-circle cursor-pointer self-center absolute"
+            style={{ left: -24 }}
             onClick={() => {
               deleteNodes(node);
               history.push("/");
             }}
-          >
-            {"(-)"}
-          </div>
-        )} */}
+          />
+        )}
         <NodeName name={node.name} id={node.id} />
-        <div className="pl-2" onClick={() => addNode(node.id)}>
-          (+)
-        </div>
+        <i
+          className="fa fa-plus-circle cursor-pointer pl-2 self-center"
+          onClick={() => addNode(node.id)}
+        />
       </div>
       <ul>
-
         {childNodes &&
           childNodes.map(node => (
             <TreeNode

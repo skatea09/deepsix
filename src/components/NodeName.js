@@ -44,6 +44,7 @@ class NodeName extends Component {
       >
         {isEditing ? (
           <input
+            className="outline-none border rounded-sm mb-1"
             onBlur={this.updateName}
             onChange={e => this.setState({ input: e.target.value })}
             ref={input => {
@@ -61,7 +62,7 @@ class NodeName extends Component {
         {hovering &&
           !isEditing && (
             <i
-              className="fas fa-pencil-alt pin-r pl-1 cursor-pointer text-sm text-grey-darker px-2"
+              className="fas fa-pencil-alt pin-r pl-1 cursor-pointer text-sm text-black px-2"
               onClick={() => this.setState({ isEditing: !isEditing })}
             />
           )}
