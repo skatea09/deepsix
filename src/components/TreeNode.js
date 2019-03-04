@@ -13,7 +13,6 @@ const TreeNode = ({
   isPageRoot,
   history
 }) => {
-
   const deleteNodes = node => {
     if (node.children)
       node.children.forEach(id => {
@@ -30,15 +29,19 @@ const TreeNode = ({
     }
   };
 
+  const handleDelete = () => {
+    if (window.confirm("Are you sure you want to delete this node?")) {
+      deleteNodes(node);
+      history.push("/");
+    }
+  };
+
   const DeleteButton = () =>
     canDelete && (
       <i
         className="fa fa-minus-circle cursor-pointer self-center absolute"
         style={{ left: -24 }}
-        onClick={() => {
-          deleteNodes(node);
-          history.push("/");
-        }}
+        onClick={handleDelete}
       />
     );
 
@@ -52,7 +55,8 @@ const TreeNode = ({
   const ChildNodes = () => {
     const childNodes = getChildNodes();
     if (!childNodes) return null;
-    return childNodes &&
+    return (
+      childNodes &&
       childNodes.map(node => (
         <TreeNode
           node={node}
@@ -62,7 +66,8 @@ const TreeNode = ({
           key={node.id}
         />
       ))
-  }
+    );
+  };
 
   return (
     <li id={isPageRoot ? "tree-root" : null}>
