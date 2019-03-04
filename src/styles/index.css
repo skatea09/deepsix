@@ -17,6 +17,7 @@ ul.tree ul {
 
 ul.tree li {
   margin: 0;
+  margin-top: -12px;
   margin-left: 10px;
   padding: 0 36px;
   line-height: 20px;
@@ -52,6 +53,7 @@ ul.tree li:last-child:before {
 
 #tree-root {
   margin-left: 0px;
+  margin-top: 0;
 }
 
 #tree-root {
