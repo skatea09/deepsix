@@ -6,7 +6,8 @@ import {
   deleteFromParentNode,
   deleteChildNode,
   updateNodeName
-} from "./firebaseHelper";
+} from "../../db/firebaseApi";
+import requestWrapper from "./requestWrapper";
 
 export const setupDbListener = () => dispatch => {
   const successCb = data =>
@@ -23,34 +24,28 @@ export const setupDbListener = () => dispatch => {
 };
 
 export const addNode = parentId => async dispatch => {
-  dispatch({ type: "ADD_NODE_REQUEST" });
-  try {
-    const newChild = { id: uuidv4(), parent: parentId };
-    await addToParentNode(parentId, newChild.id);
-    await createNewNode(newChild);
-    dispatch({ type: "ADD_NODE_SUCCESS" });
-  } catch (error) {
-    dispatch({ type: "ADD_NODE_FAILURE", payload: { error }});
-  }
+  dispatch(
+    requestWrapper("ADD_NODE", async () => {
+      const newChild = { id: uuidv4(), parent: parentId };
+      await addToParentNode(parentId, newChild.id);
+      await createNewNode(newChild);
+    })
+  );
 };
 
 export const deleteNode = ({ node, batchDelete }) => async dispatch => {
-  dispatch({ type: "DELETE_NODE_REQUEST" });
-  try {
-    if (!batchDelete) await deleteFromParentNode(node.parent, node.id);
-    await deleteChildNode(node.id);
-    dispatch({ type: "DELETE_NODE_SUCCESS" });
-  } catch (error) {
-    dispatch({ type: "DELETE_NODE_FAILURE",  payload: { error }});
-  }
+  dispatch(
+    requestWrapper("DELETE_NODE", async () => {
+      if (!batchDelete) await deleteFromParentNode(node.parent, node.id);
+      await deleteChildNode(node.id);
+    })
+  );
 };
 
 export const updateName = ({ id, name }) => async dispatch => {
-  dispatch({ type: "UPDATE_NAME_REQUEST" });
-  try {
-    await updateNodeName({ id, name });
-    dispatch({ type: "UPDATE_NAME_SUCCESS" })
-  } catch (error) {
-    dispatch({ type: "UPDATE_NAME_FAILURE", payload: { error }});
-  }
-}
+  dispatch(
+    requestWrapper("UPDATE_NAME", async () => {
+      await updateNodeName({ id, name });
+    })
+  );
+};

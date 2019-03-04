@@ -1,4 +1,4 @@
-import firebase from "../../db";
+import firebase from "./firebaseConfig";
 const firestore = firebase.firestore();
 
 export const firebaseListener = (success, failure) =>
