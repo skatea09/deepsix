@@ -25,7 +25,7 @@ export const setupDbListener = () => dispatch => {
 export const addNode = parentId => async dispatch => {
   dispatch({ type: "ADD_NODE_REQUEST" });
   try {
-    const newChild = { id: uuidv4(), name: "New", parent: parentId };
+    const newChild = { id: uuidv4(), parent: parentId };
     await addToParentNode(parentId, newChild.id);
     await createNewNode(newChild);
     dispatch({ type: "ADD_NODE_SUCCESS" });
@@ -47,7 +47,6 @@ export const deleteNode = ({ node, batchDelete }) => async dispatch => {
 
 export const updateName = ({ id, name }) => async dispatch => {
   dispatch({ type: "UPDATE_NAME_REQUEST" });
-  console.log('heeere name', name);
   try {
     await updateNodeName({ id, name });
     dispatch({ type: "UPDATE_NAME_SUCCESS" })

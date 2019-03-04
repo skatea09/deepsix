@@ -22,28 +22,33 @@ class NodeName extends Component {
     if (input && input !== name) updateName({ id, name: input });
   };
 
-  Input = () => (
-    <input
-      className="outline-none border rounded-sm mb-1 pl-2"
-      onBlur={this.updateName}
-      onChange={e => this.setState({ input: e.target.value })}
-      onKeyPress={e => {
-        if (e.key === "Enter") {
-          e.preventDefault();
-          this.blur();
-        }
-      }}
-      ref={input => {
-        this.textInput = input;
-      }}
-    />
-  );
+  Input = () => {
+    const { name } = this.props;
+    return (
+      <input
+        className="outline-none border rounded-sm mb-1 pl-2 py-1"
+        onBlur={this.updateName}
+        defaultValue={name}
+        onChange={e => this.setState({ input: e.target.value })}
+        onKeyPress={e => {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            this.blur();
+          }
+        }}
+        placeHolder="Add a name"
+        ref={input => {
+          this.textInput = input;
+        }}
+      />
+    );
+  };
 
   Name = () => {
     const { name, id } = this.props;
     return (
       <Link to={`/${id}`} className="no-underline text-black hover:underline">
-        {name}
+        {name || "New"}
       </Link>
     );
   };
@@ -86,7 +91,7 @@ NodeName.propTypes = {
 };
 
 NodeName.defaultProps = {
-  name: "New"
+  name: ""
 };
 
 export default connect(
