@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { connect } from 'react-redux';
-import * as actions from '../redux/actions';
+import { connect } from "react-redux";
+import * as actions from "../redux/actions";
 import PropTypes from "prop-types";
 
 const propTypes = {
@@ -26,7 +26,7 @@ class NodeName extends Component {
     const { name, id, updateName } = this.props;
     this.setState({ isEditing: !isEditing });
     if (input && input !== name) updateName({ id, name: input });
-  }
+  };
 
   componentDidUpdate() {
     const { isEditing } = this.state;
@@ -45,22 +45,25 @@ class NodeName extends Component {
         {isEditing ? (
           <input
             onBlur={this.updateName}
-            onChange={(e) => this.setState({ input: e.target.value })}
+            onChange={e => this.setState({ input: e.target.value })}
             ref={input => {
               this.textInput = input;
             }}
           />
         ) : (
-          <Link to={`/${id}`}>{name}</Link>
+          <Link
+            to={`/${id}`}
+            className="no-underline text-black hover:underline"
+          >
+            {name}
+          </Link>
         )}
         {hovering &&
           !isEditing && (
-            <div
+            <i
+              className="fas fa-pencil-alt pin-r pl-1 cursor-pointer text-sm text-grey-darker px-2"
               onClick={() => this.setState({ isEditing: !isEditing })}
-              className="pin-r pl-1 cursor-pointer"
-            >
-              Edit
-            </div>
+            />
           )}
       </div>
     );
@@ -70,4 +73,7 @@ class NodeName extends Component {
 NodeName.propTypes = propTypes;
 NodeName.defaultProps = defaultProps;
 
-export default connect(null, actions)(NodeName);
+export default connect(
+  null,
+  actions
+)(NodeName);

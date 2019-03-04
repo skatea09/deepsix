@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import _keyBy from "lodash/keyBy";
 import { connect } from "react-redux";
+import { compose } from "redux";
+import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import { setupDbListener } from "../redux/actions";
 import TreeNode from "./TreeNode";
@@ -54,9 +56,12 @@ class TreeRoot extends Component {
 
 TreeRoot.propTypes = propTypes;
 
-export default connect(
-  state => ({
-    nodes: state.data
-  }),
-  { setupDbListener }
+export default compose(
+  withRouter,
+  connect(
+    state => ({
+      nodes: state.data
+    }),
+    { setupDbListener }
+  )
 )(TreeRoot);
