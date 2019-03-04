@@ -31,7 +31,7 @@ class TreeRoot extends Component {
     return { pageRoot, mainRoot, nodesObj };
   };
 
-  renderNotFound = () => {
+  renderNotFoundError = () => {
     const { location: { pathname } } = this.props;
     return <div>{`No match found for ${pathname.substring(1)}`}</div>;
   };
@@ -40,16 +40,17 @@ class TreeRoot extends Component {
     const { nodes, history } = this.props;
     if (!nodes.length) return null;
     const { pageRoot, mainRoot, nodesObj } = this.getRoots();
-    if (!pageRoot) return this.renderNotFound();
+    if (!pageRoot) return this.renderNotFoundError();
     return (
-      <div>
+      <ul className="tree">
         <TreeNode
+          isPageRoot
           node={pageRoot}
           dataObj={nodesObj}
           canDelete={pageRoot !== mainRoot}
           history={history}
         />
-      </div>
+      </ul>
     );
   }
 }

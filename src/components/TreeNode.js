@@ -10,11 +10,13 @@ const propTypes = {
   addNode: PropTypes.func.isRequired,
   deleteNode: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
+  isPageRoot: PropTypes.bool,
   canDelete: PropTypes.bool
 };
 
 const defaultProps = {
-  canDelete: false
+  canDelete: false,
+  isPageRoot: false
 };
 
 const TreeNode = ({
@@ -23,6 +25,7 @@ const TreeNode = ({
   addNode,
   deleteNode,
   canDelete,
+  isPageRoot,
   history
 }) => {
   const deleteNodes = node => {
@@ -43,12 +46,11 @@ const TreeNode = ({
   const childNodes = getChildNodes();
 
   return (
-    <div>
+    <li id={isPageRoot ? 'tree-root' : null}>
       <div className="flex">
-        <NodeName name={node.name} id={node.id} />
-        {canDelete && (
+        {/* {canDelete && (
           <div
-            className="pl-2"
+            className="absolute"
             onClick={() => {
               deleteNodes(node);
               history.push("/");
@@ -56,12 +58,14 @@ const TreeNode = ({
           >
             {"(-)"}
           </div>
-        )}
-      </div>
-      <div style={{ marginLeft: 32 }}>
-        <div onClick={() => addNode(node.id)} style={{ paddingLeft: 10 }}>
+        )} */}
+        <NodeName name={node.name} id={node.id} />
+        <div className="pl-2" onClick={() => addNode(node.id)}>
           (+)
         </div>
+      </div>
+      <ul>
+
         {childNodes &&
           childNodes.map(node => (
             <TreeNode
@@ -72,8 +76,8 @@ const TreeNode = ({
               key={node.id}
             />
           ))}
-      </div>
-    </div>
+      </ul>
+    </li>
   );
 };
 
