@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet";
 import TreeRoot from './TreeRoot';
 
 const Tree = () => (
-  <div>
+  <div className="pl-4">
     <Helmet>
       <link
         rel="stylesheet"
@@ -12,7 +12,7 @@ const Tree = () => (
         crossorigin="anonymous"
       />
     </Helmet>
-    <header>Evolutionary Tree</header>
+    <header className="text-3xl font-bold py-4">Evolutionary Tree</header>
     <TreeRoot />
   </div>
 );
