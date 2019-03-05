@@ -1,4 +1,4 @@
-## Deep Six
+## Deep6
 
 In the project directory, you can run:
 
